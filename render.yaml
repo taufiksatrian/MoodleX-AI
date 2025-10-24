@@ -22,12 +22,15 @@ services:
 
   - type: pserv
     name: moodle-db
-    plan: free
     env: docker
-    dockerCommand: >
-      docker run -e MYSQL_ROOT_PASSWORD=root
-                 -e MYSQL_DATABASE=moodle_db
-                 -e MYSQL_USER=moodle_user
-                 -e MYSQL_PASSWORD=moodle_pass
-                 -p 3306:3306
-                 mariadb:10.6
+    plan: free
+    dockerImage: mariadb:10.6
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        value: root
+      - key: MYSQL_DATABASE
+        value: moodle_db
+      - key: MYSQL_USER
+        value: moodle_user
+      - key: MYSQL_PASSWORD
+        value: moodle_pass

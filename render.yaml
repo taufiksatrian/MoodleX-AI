@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: moodle
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: MOODLE_DB_HOST
+        fromService: moodle-db
+        property: host
+      - key: MOODLE_DB_PORT
+        fromService: moodle-db
+        property: port
+      - key: MOODLE_DB_USER
+        value: moodle_user
+      - key: MOODLE_DB_PASSWORD
+        value: moodle_pass
+      - key: MOODLE_DB_NAME
+        value: moodle_db
+      - key: MOODLE_URL
+        value: https://moodle.onrender.com
+
+  - type: pserv
+    name: moodle-db
+    plan: free
+    env: docker
+    dockerCommand: >
+      docker run -e MYSQL_ROOT_PASSWORD=root
+                 -e MYSQL_DATABASE=moodle_db
+                 -e MYSQL_USER=moodle_user
+                 -e MYSQL_PASSWORD=moodle_pass
+                 -p 3306:3306
+                 mariadb:10.6
